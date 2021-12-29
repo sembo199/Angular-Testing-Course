@@ -11,14 +11,30 @@ describe('CalculatorService', () => {
     // Not yet ready, use pending
     //pending();
 
+    // Creating actual instance of service
+    //const logger = new LoggerService();
+    // Jasmine Spy takes the instance of loggerService
+    // and replaces the function with a new implementation
+    //spyOn(logger, 'log');
+
+    /** ALTERNATIVE (preferred)
+     *  Test Suite should only have on instance of a service
+     *  This should be its own service. Using LoggerService here is a bad practice
+     *  You should use the following instead
+     */
+
+    const logger = jasmine.createSpyObj('LoggerService', ['log']);
+
     // Setup phase, prepare the test with the things you need
-    const calculator = new CalculatorService(new LoggerService());
+    const calculator = new CalculatorService(logger);
 
     // Execution phase, trigger the operation we want to test
     const result = calculator.add(2,2);
 
     // Assertion phase, check the results
     expect(result).toBe(4);
+
+    expect(logger.log).toHaveBeenCalledTimes(1);
 
   });
 
