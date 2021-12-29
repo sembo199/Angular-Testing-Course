@@ -2,6 +2,10 @@ import { TestBed } from "@angular/core/testing";
 import { CalculatorService } from "./calculator.service";
 import { LoggerService } from "./logger.service";
 
+// Disable entire test suite
+//xdescribe('CalculatorService', () => {
+// Focus on only one test suite
+//fdescribe('CalculatorService', () => {
 describe('CalculatorService', () => {
 
   let calculator: CalculatorService,
@@ -30,6 +34,10 @@ describe('CalculatorService', () => {
     expect(loggerSpy.log).toHaveBeenCalledTimes(1);
   });
 
+  // Disable single spec
+  //xit('should substract two numbers', () => {
+  // Focus on single spec
+  //fit('should substract two numbers', () => {
   it('should substract two numbers', () => {
     console.log("Subtract Test");
     const result = calculator.subtract(2,2);
