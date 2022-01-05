@@ -47,7 +47,7 @@ describe('CoursesCardListComponent', () => {
 
     // Fire changes to the DOM
     fixture.detectChanges();
-    console.log(el.nativeElement.outerHTML);
+    // console.log(el.nativeElement.outerHTML);
 
     const cards = el.queryAll(By.css('.course-card'));
 
@@ -59,8 +59,19 @@ describe('CoursesCardListComponent', () => {
 
   it("should display the first course", () => {
 
-      pending();
+    component.courses = setupCourses();
 
+    fixture.detectChanges();
+
+    const course = component.courses[0];
+
+    const card = el.query(By.css('.course-card:first-child')),
+          title = card.query(By.css('mat-card-title')),
+          img = card.query(By.css('img'));
+
+    expect(card).toBeTruthy('Could not find course card');
+    expect(title.nativeElement.textContent).toBe(course.titles.description);
+    expect(img.nativeElement.src).toBe(course.iconUrl);
   });
 
 
