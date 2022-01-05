@@ -84,7 +84,13 @@ describe('HomeComponent', () => {
 
   it("should display both tabs", () => {
 
-    pending();
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+
+    fixture.detectChanges();
+
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+
+    expect(tabs.length).toBe(2, 'Unexpected number of tabs found');
 
   });
 
