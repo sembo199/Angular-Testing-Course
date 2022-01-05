@@ -45,6 +45,10 @@ describe('CoursesCardListComponent', () => {
 
     component.courses = setupCourses();
 
+    // Fire changes to the DOM
+    fixture.detectChanges();
+    console.log(el.nativeElement.outerHTML);
+
     const cards = el.queryAll(By.css('.course-card'));
 
     expect(cards).toBeTruthy('Could not find cards');
