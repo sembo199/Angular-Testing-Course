@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {CoursesCardListComponent} from './courses-card-list.component';
 import {CoursesModule} from '../courses.module';
 import {COURSES} from '../../../../server/db-data';
@@ -14,15 +14,27 @@ import { MatDialog } from '@angular/material/dialog';
 
 describe('CoursesCardListComponent', () => {
 
-  beforeEach(() => {
+  let component: CoursesCardListComponent;
+  let fixture: ComponentFixture<CoursesCardListComponent>;
+
+  // Adding waitForAsync fixes beforeEach not waiting for the response of compileComponents
+  beforeEach(waitForAsync( () => {
     TestBed.configureTestingModule({
       imports: [CoursesModule]
+    }).compileComponents()
+    .then(() => {
+      // compileComponents runs async, so wait for it to be finished using .then()
+      // Fixture can be used to generate a new component instance before each test
+      fixture = TestBed.createComponent(CoursesCardListComponent);
+      component = fixture.componentInstance;
+      // Running it like this wont work, as beforeEach wont wait for compileComponents to finish
+      // causing component to not be sat when running the first spec.
     });
-  });
+  }));
 
   it("should create the component", () => {
 
-   pending();
+    expect(component).toBeTruthy();
 
   });
 
