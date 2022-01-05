@@ -7,12 +7,18 @@ import {By} from '@angular/platform-browser';
 import {sortCoursesBySeqNo} from '../home/sort-course-by-seq';
 import {Course} from '../model/course';
 import {setupCourses} from '../common/setup-test-data';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
 
 describe('CoursesCardListComponent', () => {
 
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [CoursesModule]
+    });
+  });
 
   it("should create the component", () => {
 
