@@ -16,6 +16,7 @@ describe('CoursesCardListComponent', () => {
 
   let component: CoursesCardListComponent;
   let fixture: ComponentFixture<CoursesCardListComponent>;
+  let el: DebugElement;
 
   // Adding waitForAsync fixes beforeEach not waiting for the response of compileComponents
   beforeEach(waitForAsync( () => {
@@ -27,6 +28,7 @@ describe('CoursesCardListComponent', () => {
       // Fixture can be used to generate a new component instance before each test
       fixture = TestBed.createComponent(CoursesCardListComponent);
       component = fixture.componentInstance;
+      el = fixture.debugElement;
       // Running it like this wont work, as beforeEach wont wait for compileComponents to finish
       // causing component to not be sat when running the first spec.
     });
@@ -41,7 +43,12 @@ describe('CoursesCardListComponent', () => {
 
   it("should display the course list", () => {
 
-    pending();
+    component.courses = setupCourses();
+
+    const cards = el.queryAll(By.css('.course-card'));
+
+    expect(cards).toBeTruthy('Could not find cards');
+    expect(cards.length).toBe(12, 'Unexpected number of courses');
 
   });
 
