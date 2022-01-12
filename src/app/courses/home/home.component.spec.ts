@@ -31,7 +31,7 @@ describe('HomeComponent', () => {
   beforeEach(waitForAsync(() => {
 
     const coursesServiceSpy = jasmine.createSpyObj('CoursesService', ['findAllCourses']);
-
+    // Here we are using waitForAsync as the imported modules might do http calls
     TestBed.configureTestingModule({
       imports: [
         CoursesModule,
@@ -116,6 +116,34 @@ describe('HomeComponent', () => {
     expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
 
     expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+  }));
+
+  // waitForAsync accepts Http Requests where fakeAsync does not
+  it("should display advanced courses when tab clicked", waitForAsync(() => {
+
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+
+    fixture.detectChanges();
+
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+
+    click(tabs[1]);
+
+    fixture.detectChanges();
+    // Detect changes is not enough as the operation is async.
+
+    // less convenient as no control over time or running microtasks
+    // Cant write assertions in synchronous looking way
+    fixture.whenStable().then(() => {
+      console.log("Called whenStable()");
+
+      const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
+
+      expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
+
+      expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+    });
+
   }));
 
 });
