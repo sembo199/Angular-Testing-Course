@@ -95,7 +95,7 @@ describe('HomeComponent', () => {
   });
 
 
-  xit("should display advanced courses when tab clicked", () => {
+  it("should display advanced courses when tab clicked", (done: DoneFn) => {
 
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
 
@@ -106,13 +106,18 @@ describe('HomeComponent', () => {
     click(tabs[1]);
 
     fixture.detectChanges();
+    // Detect changes is not enough as the operation is async.
 
-    const cardTitles = el.queryAll(By.css('.mat-card-title'));
+    // Using a timeout would work, but expect would finish after spec is done.
+    setTimeout(() => {
+      const cardTitles = el.queryAll(By.css('.mat-tab-body-active .mat-card-title'));
 
-    expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
+      expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
 
-    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
+      expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
 
+      done();
+    }, 500);
   });
 
 });
