@@ -1,4 +1,4 @@
-import { fakeAsync, flush, tick } from "@angular/core/testing";
+import { fakeAsync, flush, flushMicrotasks, tick } from "@angular/core/testing";
 
 fdescribe('Async Testing Examples', () => {
 
@@ -36,35 +36,27 @@ fdescribe('Async Testing Examples', () => {
     expect(test).toBeTrue();
   }));
 
-  fit ('Async test example - plain Promise', () => {
+  fit ('Async test example - plain Promise', fakeAsync(() => {
 
     let test = false;
 
     console.log("Create promise");
-
-    setTimeout(() => {
-      console.log("setTimeout() first callback triggered");
-    });
-
-    setTimeout(() => {
-      console.log("setTimeout() second callback triggered");
-    });
-
     // Promises are prioritized over setTimeout.
     // Promise is a microtask and will run before regular tasks like setTimeout
     Promise.resolve().then(() => {
       console.log("Promise evaluated successfully");
       return Promise.resolve();
-    })
-    .then(() => {
+    }).then(() => {
       console.log("Promise evaluated before setTimeout(), while nested");
       test = true;
     });
 
     console.log("Running test assertions");
 
+    flushMicrotasks();
+
     expect(test).toBeTrue();
 
-  });
+  }));
 
 });
