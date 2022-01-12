@@ -36,4 +36,35 @@ fdescribe('Async Testing Examples', () => {
     expect(test).toBeTrue();
   }));
 
+  fit ('Async test example - plain Promise', () => {
+
+    let test = false;
+
+    console.log("Create promise");
+
+    setTimeout(() => {
+      console.log("setTimeout() first callback triggered");
+    });
+
+    setTimeout(() => {
+      console.log("setTimeout() second callback triggered");
+    });
+
+    // Promises are prioritized over setTimeout.
+    // Promise is a microtask and will run before regular tasks like setTimeout
+    Promise.resolve().then(() => {
+      console.log("Promise evaluated successfully");
+      return Promise.resolve();
+    })
+    .then(() => {
+      console.log("Promise evaluated before setTimeout(), while nested");
+      test = true;
+    });
+
+    console.log("Running test assertions");
+
+    expect(test).toBeTrue();
+
+  });
+
 });
