@@ -2,7 +2,7 @@ import { fakeAsync, flush, flushMicrotasks, tick } from "@angular/core/testing";
 
 fdescribe('Async Testing Examples', () => {
 
-  it('async test example with jasmine done', (done: DoneFn) => {
+  it('Async test example with jasmine done', (done: DoneFn) => {
     let test = false;
 
     setTimeout(() => {
@@ -14,7 +14,7 @@ fdescribe('Async Testing Examples', () => {
 
   });
 
-  it('async test example - setTimeout()', fakeAsync(() => {
+  it('Async test example - setTimeout()', fakeAsync(() => {
     let test = false;
 
     setTimeout(() => {});
@@ -36,7 +36,7 @@ fdescribe('Async Testing Examples', () => {
     expect(test).toBeTrue();
   }));
 
-  fit ('Async test example - plain Promise', fakeAsync(() => {
+  it('Async test example - plain Promise', fakeAsync(() => {
 
     let test = false;
 
@@ -56,6 +56,29 @@ fdescribe('Async Testing Examples', () => {
     flushMicrotasks();
 
     expect(test).toBeTrue();
+
+  }));
+
+  it('Async test example - Promises + setTimeout()', fakeAsync(() => {
+
+    let counter = 0;
+
+    Promise.resolve().then(() => {
+      counter += 10;
+      console.log("Counter in promise", counter);
+      setTimeout(() => {
+        counter += 1;
+        console.log("Counter in setTimeout", counter);
+      }, 1000);
+    });
+
+    expect(counter).toBe(0);
+    flushMicrotasks();
+    expect(counter).toBe(10);
+    tick(500);
+    expect(counter).toBe(10);
+    tick(500);
+    expect(counter).toBe(11);
 
   }));
 
